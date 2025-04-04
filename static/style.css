@@ -1,10 +1,10 @@
 body {
-  font-family: sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   padding: 2rem;
   background: #f9f9f9;
 }
 
-h1 {
+h1, h2 {
   color: #444;
 }
 
@@ -19,6 +19,7 @@ input[type="text"] {
 
 button {
   padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
 }
 
 ul {

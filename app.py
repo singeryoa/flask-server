@@ -1,6 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import sqlite3
 import os
+from dotenv import load_dotenv
+import openai
+
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
 
@@ -9,18 +14,18 @@ DB_NAME = 'database.db'
 def init_db():
     with sqlite3.connect(DB_NAME) as conn:
         conn.execute('''CREATE TABLE IF NOT EXISTS users (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            nickname TEXT,
-                            level TEXT,
-                            points INTEGER DEFAULT 0
-                        )''')
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nickname TEXT,
+            level TEXT,
+            points INTEGER DEFAULT 0
+        )''')
         conn.execute('''CREATE TABLE IF NOT EXISTS posts (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            title TEXT,
-                            author TEXT,
-                            date TEXT,
-                            enable_3d INTEGER DEFAULT 0
-                        )''')
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT,
+            author TEXT,
+            date TEXT,
+            enable_3d INTEGER DEFAULT 0
+        )''')
 
 @app.route('/')
 def index():
@@ -57,6 +62,24 @@ def reward(post_id):
             conn.execute("UPDATE users SET points = points + 30 WHERE nickname = ?", (post[2],))
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=10000)
+@app.route('/admin')
+def admin():
+    with sqlite3.connect(DB_NAME) as conn:
+        users = conn.execute("SELECT * FROM users").fetchall()
+    return render_template('admin.html', users=users)
 
+@app.route('/world')
+def world():
+    return send_from_directory('static/world', 'index.html')
+
+@app.route('/gpt_test', methods=['POST'])
+def gpt_test():
+    user_input = request.form['message']
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": user_input}]
+    )
+    return response['choices'][0]['message']['content']
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=10000)

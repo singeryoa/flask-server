@@ -2,11 +2,11 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>OTT ID 공유 게시판</title>
+  <title>넷플리티 ID 공유 게시판</title>
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-  <h1>OTT ID 공유 게시판</h1>
+  <h1>🎬 넷플리티 ID 공유 게시판</h1>
 
   <form method="POST" action="/write">
     <input type="text" name="title" placeholder="게시글 제목" required />
@@ -20,8 +20,8 @@
       <li>
         <strong>{{ post[1] }}</strong> - {{ post[2] }} | {{ post[3] }}
         {% if post[4] %}
-          <a href="https://your-3d-world-link.com" target="_blank">3D 월드로 이동</a>
-          <a href="/reward/{{ post[0] }}">+30P 지급</a>
+          🔗 <a href="/world" target="_blank">3D 월드로 이동</a>
+          💰 <a href="/reward/{{ post[0] }}">+30P 지급</a>
         {% endif %}
       </li>
     {% endfor %}
