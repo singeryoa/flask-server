@@ -81,5 +81,10 @@ def gpt_test():
     )
     return response['choices'][0]['message']['content']
 
+@app.route('/assets/<path:filename>')
+def serve_assets(filename):
+    return send_from_directory('static/world/assets', filename)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
