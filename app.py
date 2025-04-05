@@ -78,9 +78,13 @@ def gpt_test():
     user_input = request.form['message']
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": user_input}]
+        messages=[
+            {"role": "system", "content": "당신은 한국어로만 대답하는 조수입니다."},
+            {"role": "user", "content": user_input}
+        ]
     )
     return response['choices'][0]['message']['content']
+
 
 @app.route('/assets/<path:filename>')
 def serve_assets(filename):
