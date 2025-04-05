@@ -29,9 +29,10 @@ window.addEventListener('DOMContentLoaded', function () {
         npcMat.diffuseTexture.update();
 
         // GLB 오브젝트 로드
-        BABYLON.SceneLoader.Append("/assets/", "avatar.glb", scene, function () {
+        BABYLON.SceneLoader.Append("world/assets/", "avatar.glb", scene, function () {
             console.log("GLB 로드 완료");
         });
+        
         
 
         return scene;
